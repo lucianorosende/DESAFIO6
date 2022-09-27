@@ -12,7 +12,7 @@ app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
 const port = 8080;
 
-// Handlebars engine
+// Handlebars engine ------------------------------------------------------------------
 app.engine(
     "hbs",
     handlebars({
@@ -24,15 +24,13 @@ app.set("view engine", "hbs");
 app.set("views", "./views-hbs");
 
 // Levanta el server -----------------------------------------------------------------
+
 const srv = server.listen(port, () => {
     console.log(`server up on ${srv.address().port}`);
 });
 srv.on("error", (err) => console.log("server error: " + err));
 
 app.use(Express.static("public"));
-
-export let products = [];
-const Container = new Contenedor();
 
 // Websocket ----------------------------------------------------------------------------
 
@@ -48,6 +46,9 @@ io.on("connection", (socket) => {
 });
 
 //Router --------------------------------------------------------------------------------
+
+export let products = [];
+const Container = new Contenedor();
 const apiRouter = Express.Router();
 
 // get Products
