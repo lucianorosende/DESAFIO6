@@ -82,8 +82,7 @@ apiRouter.post("/productos/guardar", (req, res) => {
     }
 
     products.push(req.body);
-    // res.send("producto con id: " + req.body.id);
-    res.redirect("/api/productos/vista");
+    res.send("producto con id: " + req.body.id);
 });
 
 // update product based off id
@@ -110,15 +109,6 @@ apiRouter.delete("/productos/borrar/:id", (req, res) => {
         products = result;
         res.send(products);
     }
-});
-
-apiRouter.get("/productos/vista", (req, res) => {
-    let prods = Container.getAll();
-
-    res.render("vista", {
-        productos: prods,
-        hayProductos: prods.length,
-    });
 });
 
 app.use("/api", apiRouter);
