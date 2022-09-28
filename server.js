@@ -34,14 +34,20 @@ app.use(Express.static("public"));
 
 // Websocket ----------------------------------------------------------------------------
 
+const messages = [];
+
 io.on("connection", (socket) => {
     console.log("new connection");
     socket.emit("products", Container.getAll());
-
+    socket.emit("messages", messages);
     socket.on("update", (data) => {
         if ((data = "ok")) {
             io.sockets.emit("products", Container.getAll());
         }
+    });
+    socket.on("newMsg", (data) => {
+        messages.push(data);
+        io.sockets.emit("messages", messages);
     });
 });
 

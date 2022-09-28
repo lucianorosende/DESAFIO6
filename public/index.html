@@ -18,7 +18,7 @@
             <h1>Ingrese Producto</h1>
             <br>
 
-            <form autocomplete="off">
+            <form id="tableForm" autocomplete="off">
                 <!-- Campo nombre del producto -->
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
@@ -38,13 +38,37 @@
                 </div>
 
                 <!-- Botón de envío -->
-                <button class="btn btn-success mt-3">Enviar</button>
+                <input type="submit" value="Enviar" class="btn btn-success mt-3 mb-3"></input>
             </form>
+            <div id="datos"></div>
         </div>
-        <div id="datos"></div>
-    </div>
-    <script src="js/main.js"></script>
-    <script src="js/hb.js"></script>
+        <div class="container mt-3">
+            <div class="jumbotron">
+                <h1>Centro de mensajes</h1>
+                <br>
+
+                <form id="msgForm" autocomplete="off" onsubmit="return addMessage()">
+                    <!-- Campo nombre del producto -->
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input id="email" class="form-control" type="email" name="email" required>
+                    </div>
+                    <hr>
+                    <div id="msgContainer" class="mb-2 mt-2"></div>
+
+                    <!-- Campo url de la foto del producto -->
+                    <div class="form-group">
+                        <label for="msg">Tu mensaje...</label>
+                        <input id="msg" class="form-control" type="text" name="msg">
+                    </div>
+
+                    <!-- Botón de envío -->
+                    <input type="submit" value="Enviar" class="btn btn-success mt-3 mb-3"></input>
+                </form>
+            </div>
+        </div>
+        <script src="js/main.js"></script>
+        <script src="js/hb.js"></script>
 </body>
 
 </html>

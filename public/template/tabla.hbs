@@ -11,12 +11,14 @@
             <th>Nombre</th>
             <th>Precio</th>
             <th>Foto</th>
+            <th>ID</th>
         </tr>
         {{#each products}}
         <tr>
             <td>{{this.title}}</td>
             <td>${{this.price}}</td>
             <td><img width="50" src={{this.thumbnail}} alt="not found"></td>
+            <td>{{this.id}}</td>
         </tr>
         {{/each}}
     </table>
