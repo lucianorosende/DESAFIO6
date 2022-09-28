@@ -3,7 +3,9 @@ import handlebars from "express-handlebars";
 import Contenedor from "./api/container.js";
 import http from "http";
 import { Server as Socket } from "socket.io";
+import fs from "fs";
 
+const route = `./chat-${new Date().toDateString()}.txt`;
 const app = Express();
 const server = http.Server(app);
 const io = new Socket(server);
@@ -36,18 +38,24 @@ app.use(Express.static("public"));
 
 const messages = [];
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
     console.log("new connection");
     socket.emit("products", Container.getAll());
-    socket.emit("messages", messages);
     socket.on("update", (data) => {
         if ((data = "ok")) {
             io.sockets.emit("products", Container.getAll());
         }
     });
-    socket.on("newMsg", (data) => {
+    if (route) {
+        let content = await fs.promises.readFile(route, "utf-8");
+        socket.emit("messages", JSON.parse(content));
+    }
+    socket.on("newMsg", async (data) => {
         messages.push(data);
-        io.sockets.emit("messages", messages);
+        let JSONobj = JSON.stringify(messages, null, 2);
+        await fs.promises.writeFile(route, JSONobj);
+        let content = await fs.promises.readFile(route, "utf-8");
+        io.sockets.emit("messages", JSON.parse(content));
     });
 });
 
