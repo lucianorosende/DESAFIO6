@@ -4,8 +4,9 @@ import Contenedor from "./api/container.js";
 import http from "http";
 import { Server as Socket } from "socket.io";
 import fs from "fs";
+import moment from "moment";
 
-const route = `./chat.txt`;
+const route = `./chat${moment().format("DD-MM-YYYY")}.txt`;
 const app = Express();
 const server = http.Server(app);
 const io = new Socket(server);
@@ -38,7 +39,16 @@ app.use(Express.static("public"));
 
 const messages = [];
 
+function fileExists() {
+    try {
+        return fs.statSync(route).isFile();
+    } catch (error) {
+        return false;
+    }
+}
+
 io.on("connection", async (socket) => {
+    let content;
     console.log("new connection");
     socket.emit("products", Container.getAll());
     socket.on("update", (data) => {
@@ -47,26 +57,22 @@ io.on("connection", async (socket) => {
         }
     });
 
-    let content = await fs.promises.readFile(route, "utf-8");
-    socket.emit("messages", JSON.parse(content));
+    if (fileExists()) {
+        content = await fs.promises.readFile(route, "utf-8");
+        socket.emit("messages", JSON.parse(content));
+    } else {
+        await fs.promises.writeFile(route, JSON.stringify(messages));
+        content = await fs.promises.readFile(route, "utf-8");
+        socket.emit("messages", JSON.parse(content));
+    }
 
     socket.on("newMsg", async (data) => {
-        let contentOne = await fs.promises.readFile(route, "utf-8");
-        const contentOneParse = JSON.parse(contentOne);
-        if (contentOneParse.length === 0) {
-            messages.push(data);
-            let JSONobj = JSON.stringify(messages, null, 2);
-            await fs.promises.writeFile(route, JSONobj);
-            let content = await fs.promises.readFile(route, "utf-8");
-            io.sockets.emit("messages", JSON.parse(content));
-        } else {
-            contentOneParse.push(data);
-            let JSONobj = JSON.stringify(contentOneParse, null, 2);
-            await fs.promises.writeFile(route, JSONobj);
-        }
-
-        let content = await fs.promises.readFile(route, "utf-8");
-        io.sockets.emit("messages", JSON.parse(content));
+        content = await fs.promises.readFile(route, "utf-8");
+        const contentParse = JSON.parse(content);
+        contentParse.push(data);
+        let JSONobj = JSON.stringify(contentParse, null, 2);
+        await fs.promises.writeFile(route, JSONobj);
+        io.sockets.emit("messages", JSON.parse(JSONobj));
     });
 });
 
