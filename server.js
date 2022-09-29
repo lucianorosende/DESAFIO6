@@ -72,7 +72,8 @@ io.on("connection", async (socket) => {
         contentParse.push(data);
         let JSONobj = JSON.stringify(contentParse, null, 2);
         await fs.promises.writeFile(route, JSONobj);
-        io.sockets.emit("messages", JSON.parse(JSONobj));
+        content = await fs.promises.readFile(route, "utf-8");
+        io.sockets.emit("messages", JSON.parse(content));
     });
 });
 
