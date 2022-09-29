@@ -1,11 +1,11 @@
-import Express from "express";
+import Express, { json } from "express";
 import handlebars from "express-handlebars";
 import Contenedor from "./api/container.js";
 import http from "http";
 import { Server as Socket } from "socket.io";
 import fs from "fs";
 
-const route = `./chat-${new Date().toDateString()}.txt`;
+const route = `./chat.txt`;
 const app = Express();
 const server = http.Server(app);
 const io = new Socket(server);
@@ -46,14 +46,25 @@ io.on("connection", async (socket) => {
             io.sockets.emit("products", Container.getAll());
         }
     });
-    if (route) {
-        let content = await fs.promises.readFile(route, "utf-8");
-        socket.emit("messages", JSON.parse(content));
-    }
+
+    let content = await fs.promises.readFile(route, "utf-8");
+    socket.emit("messages", JSON.parse(content));
+
     socket.on("newMsg", async (data) => {
-        messages.push(data);
-        let JSONobj = JSON.stringify(messages, null, 2);
-        await fs.promises.writeFile(route, JSONobj);
+        let contentOne = await fs.promises.readFile(route, "utf-8");
+        const contentOneParse = JSON.parse(contentOne);
+        if (contentOneParse.length === 0) {
+            messages.push(data);
+            let JSONobj = JSON.stringify(messages, null, 2);
+            await fs.promises.writeFile(route, JSONobj);
+            let content = await fs.promises.readFile(route, "utf-8");
+            io.sockets.emit("messages", JSON.parse(content));
+        } else {
+            contentOneParse.push(data);
+            let JSONobj = JSON.stringify(contentOneParse, null, 2);
+            await fs.promises.writeFile(route, JSONobj);
+        }
+
         let content = await fs.promises.readFile(route, "utf-8");
         io.sockets.emit("messages", JSON.parse(content));
     });
