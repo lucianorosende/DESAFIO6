@@ -2,9 +2,7 @@
 
 class Contenedor {
     static products = [];
-    // constructor(products) {
-    //     this.products = products;
-    // }
+
     getAll() {
         return Contenedor.products;
     }

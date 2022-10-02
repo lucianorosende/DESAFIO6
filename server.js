@@ -1,19 +1,21 @@
 import Express, { json } from "express";
 import handlebars from "express-handlebars";
-import Contenedor from "./api/container.js";
+import apiRouter from "./router/products.router.js";
 import http from "http";
-import { Server as Socket } from "socket.io";
 import fs from "fs";
+import Contenedor from "./api/container.js";
+import { Server as Socket } from "socket.io";
 import moment from "moment";
 
-const route = `./chat${moment().format("DD-MM-YYYY")}.txt`;
 const app = Express();
 const server = http.Server(app);
-const io = new Socket(server);
+const port = 8080;
+const Container = new Contenedor();
 
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
-const port = 8080;
+app.use("/api/productos", apiRouter);
+app.use(Express.static("public"));
 
 // Handlebars engine ------------------------------------------------------------------
 app.engine(
@@ -33,9 +35,10 @@ const srv = server.listen(port, () => {
 });
 srv.on("error", (err) => console.log("server error: " + err));
 
-app.use(Express.static("public"));
-
 // Websocket ----------------------------------------------------------------------------
+
+const io = new Socket(server);
+const route = `./chat${moment().format("DD-MM-YYYY")}.txt`;
 
 const messages = [];
 
@@ -76,79 +79,3 @@ io.on("connection", async (socket) => {
         io.sockets.emit("messages", JSON.parse(content));
     });
 });
-
-//Router --------------------------------------------------------------------------------
-
-const Container = new Contenedor();
-const apiRouter = Express.Router();
-
-const isAdmin = (req, res, next) => {
-    if (req.query.admin === "true") {
-        next();
-    } else {
-        res.send({ error: "You are not allowed to access this" });
-    }
-};
-
-// get Products
-apiRouter.get("/", (req, res) => {
-    let PRODUCTS = Container.getAll();
-
-    !PRODUCTS.length
-        ? res.json({ error: "No products found" })
-        : res.json(PRODUCTS);
-});
-
-// get Products based off id
-apiRouter.get("/:id", (req, res) => {
-    const { id } = req.params;
-    let product = Container.getById(id);
-    res.json(product);
-});
-
-// add products and add id
-apiRouter.post("/", isAdmin, (req, res) => {
-    let PRODUCTS = Container.getAll();
-    const { title, price, thumbnail } = req.body;
-    if (!title || !price || !thumbnail) {
-        return res.send("completar todo el formulario");
-    }
-    if (req.body.id === undefined) {
-        req.body.id = 1;
-        if (PRODUCTS.length > 0) {
-            let findId = PRODUCTS.find((p) => p.id === PRODUCTS.length).id;
-
-            req.body.id = findId + 1;
-        }
-    }
-
-    PRODUCTS.push(req.body);
-    res.send("producto con id: " + req.body.id);
-});
-
-// update product based off id
-apiRouter.put("/:id", isAdmin, (req, res) => {
-    let { title, price, thumbnail } = req.body;
-    let producto = Container.update(req.params.id, {
-        title,
-        price,
-        thumbnail,
-    });
-
-    producto
-        ? res.json(producto)
-        : res.json({ error: "producto no encontrado" });
-});
-
-// delete product based off id
-apiRouter.delete("/:id", isAdmin, (req, res) => {
-    const result = Container.delete(req.params.id);
-
-    if (result === null) {
-        res.send(`no hay producto con id: ${req.params.id}`);
-    } else {
-        res.send(products);
-    }
-});
-
-app.use("/api/productos", apiRouter);
