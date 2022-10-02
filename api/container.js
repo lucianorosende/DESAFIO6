@@ -1,5 +1,3 @@
-// import { products } from "../server.js";
-
 class Contenedor {
     static products = [];
 
