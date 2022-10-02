@@ -83,8 +83,16 @@ export let products = [];
 const Container = new Contenedor();
 const apiRouter = Express.Router();
 
+const isAdmin = (req, res, next) => {
+    if (req.query.admin === "true") {
+        next();
+    } else {
+        res.send({ error: "You are not allowed to access this" });
+    }
+};
+
 // get Products
-apiRouter.get("/productos/listar", (req, res) => {
+apiRouter.get("/", (req, res) => {
     let PRODUCTS = Container.getAll();
 
     !products.length
@@ -93,14 +101,14 @@ apiRouter.get("/productos/listar", (req, res) => {
 });
 
 // get Products based off id
-apiRouter.get("/productos/listar/:id", (req, res) => {
+apiRouter.get("/:id", (req, res) => {
     const { id } = req.params;
     let product = Container.getById(id);
     res.json(product);
 });
 
 // add products and add id
-apiRouter.post("/productos/guardar", (req, res) => {
+apiRouter.post("/", isAdmin, (req, res) => {
     const { title, price, thumbnail } = req.body;
     if (!title || !price || !thumbnail) {
         return res.send("completar todo el formulario");
@@ -108,7 +116,7 @@ apiRouter.post("/productos/guardar", (req, res) => {
     if (req.body.id === undefined) {
         req.body.id = 1;
         if (products.length > 0) {
-            let findId = products.find((p) => p.id === products.length).id;
+            let findId = products.find((p) => p.id == products.length).id;
             req.body.id = findId + 1;
         }
     }
@@ -118,7 +126,7 @@ apiRouter.post("/productos/guardar", (req, res) => {
 });
 
 // update product based off id
-apiRouter.put("/productos/actualizar/:id", (req, res) => {
+apiRouter.put("/:id", isAdmin, (req, res) => {
     let { title, price, thumbnail } = req.body;
     let producto = Container.update(req.params.id, {
         title,
@@ -132,7 +140,7 @@ apiRouter.put("/productos/actualizar/:id", (req, res) => {
 });
 
 // delete product based off id
-apiRouter.delete("/productos/borrar/:id", (req, res) => {
+apiRouter.delete("/:id", isAdmin, (req, res) => {
     const result = Container.delete(req.params.id);
 
     if (result === null) {
@@ -143,4 +151,4 @@ apiRouter.delete("/productos/borrar/:id", (req, res) => {
     }
 });
 
-app.use("/api", apiRouter);
+app.use("/api/productos", apiRouter);
