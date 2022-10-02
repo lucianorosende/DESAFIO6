@@ -79,7 +79,6 @@ io.on("connection", async (socket) => {
 
 //Router --------------------------------------------------------------------------------
 
-export let products = [];
 const Container = new Contenedor();
 const apiRouter = Express.Router();
 
@@ -95,7 +94,7 @@ const isAdmin = (req, res, next) => {
 apiRouter.get("/", (req, res) => {
     let PRODUCTS = Container.getAll();
 
-    !products.length
+    !PRODUCTS.length
         ? res.json({ error: "No products found" })
         : res.json(PRODUCTS);
 });
@@ -109,19 +108,21 @@ apiRouter.get("/:id", (req, res) => {
 
 // add products and add id
 apiRouter.post("/", isAdmin, (req, res) => {
+    let PRODUCTS = Container.getAll();
     const { title, price, thumbnail } = req.body;
     if (!title || !price || !thumbnail) {
         return res.send("completar todo el formulario");
     }
     if (req.body.id === undefined) {
         req.body.id = 1;
-        if (products.length > 0) {
-            let findId = products.find((p) => p.id == products.length).id;
+        if (PRODUCTS.length > 0) {
+            let findId = PRODUCTS.find((p) => p.id === PRODUCTS.length).id;
+
             req.body.id = findId + 1;
         }
     }
 
-    products.push(req.body);
+    PRODUCTS.push(req.body);
     res.send("producto con id: " + req.body.id);
 });
 
@@ -146,7 +147,6 @@ apiRouter.delete("/:id", isAdmin, (req, res) => {
     if (result === null) {
         res.send(`no hay producto con id: ${req.params.id}`);
     } else {
-        products = result;
         res.send(products);
     }
 });

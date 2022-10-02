@@ -1,23 +1,17 @@
-import { products } from "../server.js";
+// import { products } from "../server.js";
 
 class Contenedor {
-    constructor(products) {
-        this.products = products;
-    }
-    save(obj) {
-        for (let i = 0; i < obj.length; i++) {
-            if (obj[i].id === undefined) {
-                obj[i].id = i;
-                products.push(obj[i]);
-            }
-        }
-        return products;
-    }
+    static products = [];
+    // constructor(products) {
+    //     this.products = products;
+    // }
     getAll() {
-        return products;
+        return Contenedor.products;
     }
     getById(num) {
-        let findProduct = products.find((product) => product.id == num);
+        let findProduct = Contenedor.products.find(
+            (product) => product.id == num
+        );
         if (findProduct === undefined)
             return `no existe ningun producto para el valor que deseas`;
         return findProduct;
@@ -27,21 +21,20 @@ class Contenedor {
         let index = newData.findIndex((product) => product.id == id);
         if (index >= 0) {
             newData.splice(index, 1, { ...obj, id: parseInt(id) });
-            this.products = newData;
+            Contenedor.products = newData;
             return obj;
         } else {
             return null;
         }
     }
     delete(id) {
-        let newData = this.getAll();
         const getItem = this.getById(id);
-        let filter = newData.filter((product) => product.id != id);
-
+        let filter = Contenedor.products.filter((product) => product.id != id);
+        Contenedor.products = filter;
         if (getItem === "no existe ningun producto para el valor que deseas") {
             return null;
         }
-        return filter;
+        return Contenedor.products;
     }
 }
 
