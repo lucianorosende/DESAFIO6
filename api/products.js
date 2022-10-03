@@ -8,8 +8,7 @@ class Contenedor {
         let findProduct = Contenedor.products.find(
             (product) => product.id == num
         );
-        if (findProduct === undefined)
-            return `no existe ningun producto para el valor que deseas`;
+        if (findProduct === undefined) return null;
         return findProduct;
     }
     update(id, obj) {
@@ -27,7 +26,7 @@ class Contenedor {
         const getItem = this.getById(id);
         let filter = Contenedor.products.filter((product) => product.id != id);
         Contenedor.products = filter;
-        if (getItem === "no existe ningun producto para el valor que deseas") {
+        if (getItem === null) {
             return null;
         }
         return Contenedor.products;

@@ -1,10 +1,12 @@
 import Express from "express";
-import Contenedor from "../api/container.js";
+import Contenedor from "../api/products.js";
+import fs from "fs";
 
 //Router --------------------------------------------------------------------------------
 
 const Container = new Contenedor();
 const apiRouter = Express.Router();
+const route = "./productos.txt";
 
 const isAdmin = (req, res, next) => {
     if (req.query.admin === "true") {
@@ -27,14 +29,16 @@ apiRouter.get("/", (req, res) => {
 apiRouter.get("/:id", (req, res) => {
     const { id } = req.params;
     let product = Container.getById(id);
-    res.json(product);
+    product === null
+        ? res.json({ error: "Product not found" })
+        : res.json(product);
 });
 
 // add products and add id
-apiRouter.post("/", isAdmin, (req, res) => {
+apiRouter.post("/", isAdmin, async (req, res) => {
     let PRODUCTS = Container.getAll();
-    const { title, price, thumbnail } = req.body;
-    if (!title || !price || !thumbnail) {
+    const { nombre, descripcion, codigo, foto, precio, stock } = req.body;
+    if (!nombre || !descripcion || !codigo || !foto || !precio || !stock) {
         return res.send("completar todo el formulario");
     }
     if (req.body.id === undefined) {
@@ -45,8 +49,10 @@ apiRouter.post("/", isAdmin, (req, res) => {
             req.body.id = findId + 1;
         }
     }
-
+    req.body.timestamp = new Date().toLocaleTimeString();
     PRODUCTS.push(req.body);
+    let stringify = JSON.stringify(PRODUCTS, null, 2);
+    await fs.promises.writeFile(route, stringify);
     res.send("producto con id: " + req.body.id);
 });
 

@@ -1,6 +1,7 @@
 import Express, { json } from "express";
 import handlebars from "express-handlebars";
 import apiRouter from "./router/products.router.js";
+import CartRouter from "./router/cart.router.js";
 import http from "http";
 import { Server as Socket } from "socket.io";
 import Connect from "./api/websocket.js";
@@ -12,6 +13,7 @@ const port = 8080;
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
 app.use("/api/productos", apiRouter);
+app.use("/api/carrito", CartRouter);
 app.use(Express.static("public"));
 
 // Handlebars engine ------------------------------------------------------------------
