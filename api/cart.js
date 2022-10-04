@@ -13,8 +13,21 @@ class Cart {
             timestamp: new Date().toLocaleDateString(),
             productos: [],
         };
-        this.cart.push(data);
-        return this.id;
+        if (this.id === 1) {
+            this.cart.push(data);
+            return this.id;
+        } else {
+            let dataWithId = {
+                id: this.cart[this.cart.length - 1].id + 1,
+                timestamp: new Date().toLocaleDateString(),
+                productos: [],
+            };
+
+            this.cart.push(dataWithId);
+        }
+
+        // console.log(this.cart[this.cart.length - 1].id);
+        return this.cart[this.cart.length - 1].id;
     }
     getAllCarts() {
         return this.cart.length

@@ -44,9 +44,7 @@ apiRouter.post("/", isAdmin, async (req, res) => {
     if (req.body.id === undefined) {
         req.body.id = 1;
         if (PRODUCTS.length > 0) {
-            let findId = PRODUCTS.find((p) => p.id === PRODUCTS.length).id;
-
-            req.body.id = findId + 1;
+            req.body.id = PRODUCTS[PRODUCTS.length - 1].id + 1;
         }
     }
     req.body.timestamp = new Date().toLocaleTimeString();
