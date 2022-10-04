@@ -17,16 +17,9 @@ class Cart {
             this.cart.push(data);
             return this.id;
         } else {
-            let dataWithId = {
-                id: this.cart[this.cart.length - 1].id + 1,
-                timestamp: new Date().toLocaleDateString(),
-                productos: [],
-            };
-
-            this.cart.push(dataWithId);
+            data.id = this.cart[this.cart.length - 1].id + 1;
         }
 
-        // console.log(this.cart[this.cart.length - 1].id);
         return this.cart[this.cart.length - 1].id;
     }
     getAllCarts() {
