@@ -16,6 +16,7 @@ function fileExists() {
         return false;
     }
 }
+
 const Connect = () => {
     io.on("connection", async (socket) => {
         let content;

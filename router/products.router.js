@@ -6,7 +6,7 @@ import fs from "fs";
 
 const Container = new Contenedor();
 const apiRouter = Express.Router();
-const route = "./productos.txt";
+export const route = "./productos.txt";
 
 const isAdmin = (req, res, next) => {
     if (req.query.admin === "true") {
@@ -17,10 +17,10 @@ const isAdmin = (req, res, next) => {
 };
 
 // get Products
-apiRouter.get("/", (req, res) => {
-    let PRODUCTS = Container.getAll();
+apiRouter.get("/", async (req, res) => {
+    let PRODUCTS = await Container.getWithFs();
 
-    !PRODUCTS.length
+    PRODUCTS === null
         ? res.json({ error: "No products found" })
         : res.json(PRODUCTS);
 });

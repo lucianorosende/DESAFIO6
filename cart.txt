@@ -1,37 +1,58 @@
 [
   {
     "id": 1,
-    "timestamp": "4/10/2022",
-    "productos": []
+    "timestamp": "5/10/2022",
+    "productos": [
+      {
+        "nombre": "auto",
+        "descripcion": "Auto para 4 pasajeros",
+        "codigo": "25990",
+        "foto": "chrome://branding/content/about-logo.png",
+        "precio": 200,
+        "stock": 20,
+        "id": 3,
+        "timestamp": "11:27:55"
+      },
+      {
+        "nombre": "auto",
+        "descripcion": "Auto para 4 pasajeros",
+        "codigo": "25990",
+        "foto": "chrome://branding/content/about-logo.png",
+        "precio": 200,
+        "stock": 20,
+        "id": 3,
+        "timestamp": "11:27:55"
+      },
+      {
+        "nombre": "auto",
+        "descripcion": "Auto para 4 pasajeros",
+        "codigo": "25990",
+        "foto": "chrome://branding/content/about-logo.png",
+        "precio": 200,
+        "stock": 20,
+        "id": 3,
+        "timestamp": "11:27:55"
+      },
+      {
+        "nombre": "auto",
+        "descripcion": "Auto para 4 pasajeros",
+        "codigo": "25990",
+        "foto": "chrome://branding/content/about-logo.png",
+        "precio": 200,
+        "stock": 20,
+        "id": 2,
+        "timestamp": "11:27:55"
+      }
+    ]
   },
   {
     "id": 2,
-    "timestamp": "4/10/2022",
+    "timestamp": "5/10/2022",
     "productos": []
   },
   {
     "id": 3,
-    "timestamp": "4/10/2022",
-    "productos": []
-  },
-  {
-    "id": 4,
-    "timestamp": "4/10/2022",
-    "productos": []
-  },
-  {
-    "id": 5,
-    "timestamp": "4/10/2022",
-    "productos": []
-  },
-  {
-    "id": 6,
-    "timestamp": "4/10/2022",
-    "productos": []
-  },
-  {
-    "id": 7,
-    "timestamp": "4/10/2022",
+    "timestamp": "5/10/2022",
     "productos": []
   }
 ]

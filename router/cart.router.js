@@ -52,8 +52,18 @@ CartRouter.post("/:id/productos/:idPrd", async (req, res) => {
         JSON.stringify(CartClass.getAllCarts(), null, 2)
     );
     saveProduct === null
-        ? res.send("no hay productos para mostrar")
+        ? res.send("no hay productos para agregar")
         : res.send(saveProduct);
+});
+
+CartRouter.delete("/:id/productos/:idPrd", (req, res) => {
+    let deleteProduct = CartClass.deleteProductInCart(
+        req.params.id,
+        req.params.idPrd
+    );
+    deleteProduct === null
+        ? res.send("no hay productos para eliminar")
+        : res.send(deleteProduct);
 });
 
 export default CartRouter;

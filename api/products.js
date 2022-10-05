@@ -1,8 +1,28 @@
+import fs from "fs";
+import { route } from "../router/products.router.js";
+
+function fileExists() {
+    try {
+        return fs.statSync(route).isFile();
+    } catch (error) {
+        return false;
+    }
+}
+
 class Contenedor {
     static products = [];
 
     getAll() {
         return Contenedor.products;
+    }
+    async getWithFs() {
+        if (fileExists()) {
+            let content = await fs.promises.readFile(route, "utf-8");
+            content = JSON.parse(content);
+            return content;
+        } else {
+            return null;
+        }
     }
     getById(num) {
         let findProduct = Contenedor.products.find(

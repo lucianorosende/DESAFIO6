@@ -18,6 +18,7 @@ class Cart {
             return this.id;
         } else {
             data.id = this.cart[this.cart.length - 1].id + 1;
+            this.cart.push(data);
         }
 
         return this.cart[this.cart.length - 1].id;
@@ -44,6 +45,16 @@ class Cart {
             return null;
         } else {
             dataCart.productos.push(dataProduct);
+            return dataCart;
+        }
+    }
+    deleteProductInCart(cID, pID) {
+        let dataCart = this.getCartByID(cID);
+        if (!dataCart) {
+            return null;
+        } else {
+            let newData = dataCart.productos.filter((p) => p.id != pID);
+            dataCart.productos = newData;
             return dataCart;
         }
     }
