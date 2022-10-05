@@ -26,9 +26,9 @@ apiRouter.get("/", async (req, res) => {
 });
 
 // get Products based off id
-apiRouter.get("/:id", (req, res) => {
+apiRouter.get("/:id", async (req, res) => {
     const { id } = req.params;
-    let product = Container.getById(id);
+    let product = await Container.getById(id);
     product === null
         ? res.json({ error: "Product not found" })
         : res.json(product);

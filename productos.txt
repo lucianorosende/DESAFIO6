@@ -7,7 +7,7 @@
     "precio": 200,
     "stock": 20,
     "id": 1,
-    "timestamp": "11:33:09"
+    "timestamp": "11:42:35"
   },
   {
     "nombre": "auto",
@@ -17,7 +17,7 @@
     "precio": 200,
     "stock": 20,
     "id": 2,
-    "timestamp": "11:33:10"
+    "timestamp": "11:42:36"
   },
   {
     "nombre": "auto",
@@ -27,6 +27,16 @@
     "precio": 200,
     "stock": 20,
     "id": 3,
-    "timestamp": "11:33:10"
+    "timestamp": "11:42:36"
+  },
+  {
+    "nombre": "auto",
+    "descripcion": "Auto para 4 pasajeros",
+    "codigo": "25990",
+    "foto": "chrome://branding/content/about-logo.png",
+    "precio": 200,
+    "stock": 20,
+    "id": 4,
+    "timestamp": "11:42:36"
   }
 ]

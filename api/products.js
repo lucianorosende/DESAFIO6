@@ -24,12 +24,16 @@ class Contenedor {
             return null;
         }
     }
-    getById(num) {
-        let findProduct = Contenedor.products.find(
-            (product) => product.id == num
-        );
-        if (findProduct === undefined) return null;
-        return findProduct;
+    async getById(num) {
+        if (fileExists()) {
+            let data = await fs.promises.readFile(route, "utf-8");
+            data = JSON.parse(data);
+            let findProduct = data.find((product) => product.id == num);
+            if (findProduct === undefined) return null;
+            return findProduct;
+        } else {
+            return null;
+        }
     }
     update(id, obj) {
         let newData = this.getAll();
