@@ -56,10 +56,14 @@ CartRouter.post("/:id/productos/:idPrd", async (req, res) => {
         : res.send(saveProduct);
 });
 
-CartRouter.delete("/:id/productos/:idPrd", (req, res) => {
+CartRouter.delete("/:id/productos/:idPrd", async (req, res) => {
     let deleteProduct = CartClass.deleteProductInCart(
         req.params.id,
         req.params.idPrd
+    );
+    await fs.promises.writeFile(
+        route,
+        JSON.stringify(CartClass.getAllCarts(), null, 2)
     );
     deleteProduct === null
         ? res.send("no hay productos para eliminar")

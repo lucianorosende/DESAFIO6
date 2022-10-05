@@ -2,48 +2,7 @@
   {
     "id": 1,
     "timestamp": "5/10/2022",
-    "productos": [
-      {
-        "nombre": "auto",
-        "descripcion": "Auto para 4 pasajeros",
-        "codigo": "25990",
-        "foto": "chrome://branding/content/about-logo.png",
-        "precio": 200,
-        "stock": 20,
-        "id": 3,
-        "timestamp": "11:27:55"
-      },
-      {
-        "nombre": "auto",
-        "descripcion": "Auto para 4 pasajeros",
-        "codigo": "25990",
-        "foto": "chrome://branding/content/about-logo.png",
-        "precio": 200,
-        "stock": 20,
-        "id": 3,
-        "timestamp": "11:27:55"
-      },
-      {
-        "nombre": "auto",
-        "descripcion": "Auto para 4 pasajeros",
-        "codigo": "25990",
-        "foto": "chrome://branding/content/about-logo.png",
-        "precio": 200,
-        "stock": 20,
-        "id": 3,
-        "timestamp": "11:27:55"
-      },
-      {
-        "nombre": "auto",
-        "descripcion": "Auto para 4 pasajeros",
-        "codigo": "25990",
-        "foto": "chrome://branding/content/about-logo.png",
-        "precio": 200,
-        "stock": 20,
-        "id": 2,
-        "timestamp": "11:27:55"
-      }
-    ]
+    "productos": []
   },
   {
     "id": 2,

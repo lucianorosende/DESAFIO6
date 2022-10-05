@@ -7,7 +7,7 @@
     "precio": 200,
     "stock": 20,
     "id": 1,
-    "timestamp": "11:27:54"
+    "timestamp": "11:33:09"
   },
   {
     "nombre": "auto",
@@ -17,7 +17,7 @@
     "precio": 200,
     "stock": 20,
     "id": 2,
-    "timestamp": "11:27:55"
+    "timestamp": "11:33:10"
   },
   {
     "nombre": "auto",
@@ -27,6 +27,6 @@
     "precio": 200,
     "stock": 20,
     "id": 3,
-    "timestamp": "11:27:55"
+    "timestamp": "11:33:10"
   }
 ]
