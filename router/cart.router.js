@@ -43,7 +43,7 @@ CartRouter.get("/:id/productos", (req, res) => {
 });
 
 CartRouter.post("/:id/productos/:idPrd", async (req, res) => {
-    let saveProduct = CartClass.saveProductInCart(
+    let saveProduct = await CartClass.saveProductInCart(
         req.params.id,
         req.params.idPrd
     );

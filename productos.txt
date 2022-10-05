@@ -1,42 +1,22 @@
 [
   {
-    "nombre": "auto",
+    "nombre": "2",
     "descripcion": "Auto para 4 pasajeros",
     "codigo": "25990",
     "foto": "chrome://branding/content/about-logo.png",
     "precio": 200,
     "stock": 20,
     "id": 1,
-    "timestamp": "11:42:35"
+    "timestamp": "12:28:32"
   },
   {
-    "nombre": "auto",
+    "nombre": "2",
     "descripcion": "Auto para 4 pasajeros",
     "codigo": "25990",
     "foto": "chrome://branding/content/about-logo.png",
     "precio": 200,
     "stock": 20,
     "id": 2,
-    "timestamp": "11:42:36"
-  },
-  {
-    "nombre": "auto",
-    "descripcion": "Auto para 4 pasajeros",
-    "codigo": "25990",
-    "foto": "chrome://branding/content/about-logo.png",
-    "precio": 200,
-    "stock": 20,
-    "id": 3,
-    "timestamp": "11:42:36"
-  },
-  {
-    "nombre": "auto",
-    "descripcion": "Auto para 4 pasajeros",
-    "codigo": "25990",
-    "foto": "chrome://branding/content/about-logo.png",
-    "precio": 200,
-    "stock": 20,
-    "id": 4,
-    "timestamp": "11:42:36"
+    "timestamp": "12:28:33"
   }
 ]

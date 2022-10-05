@@ -38,9 +38,9 @@ class Cart {
         this.cart = filter;
         return this.cart;
     }
-    saveProductInCart(cID, pID) {
+    async saveProductInCart(cID, pID) {
         let dataCart = this.getCartByID(cID);
-        let dataProduct = this.products.getById(pID);
+        let dataProduct = await this.products.getById(pID);
         if (!dataProduct || !dataCart) {
             return null;
         } else {

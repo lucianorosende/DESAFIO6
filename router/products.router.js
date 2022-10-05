@@ -20,9 +20,9 @@ const isAdmin = (req, res, next) => {
 apiRouter.get("/", async (req, res) => {
     let PRODUCTS = await Container.getWithFs();
 
-    PRODUCTS === null
+    PRODUCTS === undefined
         ? res.json({ error: "No products found" })
-        : res.json(PRODUCTS);
+        : res.json({ PRODUCTS: PRODUCTS });
 });
 
 // get Products based off id
@@ -36,7 +36,7 @@ apiRouter.get("/:id", async (req, res) => {
 
 // add products and add id
 apiRouter.post("/", isAdmin, async (req, res) => {
-    let PRODUCTS = Container.getAll();
+    let PRODUCTS = await Container.getWithFs();
     const { nombre, descripcion, codigo, foto, precio, stock } = req.body;
     if (!nombre || !descripcion || !codigo || !foto || !precio || !stock) {
         return res.send("completar todo el formulario");
@@ -55,22 +55,24 @@ apiRouter.post("/", isAdmin, async (req, res) => {
 });
 
 // update product based off id
-apiRouter.put("/:id", isAdmin, (req, res) => {
-    let { title, price, thumbnail } = req.body;
-    let producto = Container.update(req.params.id, {
-        title,
-        price,
-        thumbnail,
+apiRouter.put("/:id", isAdmin, async (req, res) => {
+    const { nombre, descripcion, codigo, foto, precio, stock } = req.body;
+    let producto = await Container.update(req.params.id, {
+        nombre,
+        descripcion,
+        codigo,
+        foto,
+        precio,
+        stock,
     });
-
-    producto
+    producto !== null
         ? res.json(producto)
         : res.json({ error: "producto no encontrado" });
 });
 
 // delete product based off id
-apiRouter.delete("/:id", isAdmin, (req, res) => {
-    const result = Container.delete(req.params.id);
+apiRouter.delete("/:id", isAdmin, async (req, res) => {
+    const result = await Container.delete(req.params.id);
 
     if (result === null) {
         res.send(`no hay producto con id: ${req.params.id}`);

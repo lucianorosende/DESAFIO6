@@ -21,7 +21,7 @@ class Contenedor {
             content = JSON.parse(content);
             return content;
         } else {
-            return null;
+            await fs.promises.writeFile(route, JSON.stringify([]));
         }
     }
     async getById(num) {
@@ -32,28 +32,34 @@ class Contenedor {
             if (findProduct === undefined) return null;
             return findProduct;
         } else {
+            await fs.promises.writeFile(route, JSON.stringify([]));
             return null;
         }
     }
-    update(id, obj) {
-        let newData = this.getAll();
+    async update(id, obj) {
+        let newData = await this.getWithFs();
+        newData = JSON.parse(JSON.stringify(newData));
         let index = newData.findIndex((product) => product.id == id);
         if (index >= 0) {
             newData.splice(index, 1, { ...obj, id: parseInt(id) });
-            Contenedor.products = newData;
-            return obj;
+            await fs.promises.writeFile(
+                route,
+                JSON.stringify(newData, null, 2)
+            );
+            return newData[index];
         } else {
             return null;
         }
     }
-    delete(id) {
-        const getItem = this.getById(id);
-        let filter = Contenedor.products.filter((product) => product.id != id);
-        Contenedor.products = filter;
+    async delete(id) {
+        let newData = await this.getWithFs();
+        const getItem = await this.getById(id);
+        let filter = newData.filter((product) => product.id != id);
         if (getItem === null) {
             return null;
         }
-        return Contenedor.products;
+        await fs.promises.writeFile(route, JSON.stringify(filter, null, 2));
+        return filter;
     }
 }
 
