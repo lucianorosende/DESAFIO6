@@ -1,22 +1,11 @@
 [
   {
-    "nombre": "2",
+    "nombre": "a",
     "descripcion": "Auto para 4 pasajeros",
     "codigo": "25990",
     "foto": "chrome://branding/content/about-logo.png",
     "precio": 200,
     "stock": 20,
-    "id": 1,
-    "timestamp": "12:28:32"
-  },
-  {
-    "nombre": "2",
-    "descripcion": "Auto para 4 pasajeros",
-    "codigo": "25990",
-    "foto": "chrome://branding/content/about-logo.png",
-    "precio": 200,
-    "stock": 20,
-    "id": 2,
-    "timestamp": "12:28:33"
+    "id": 4
   }
 ]
