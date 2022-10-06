@@ -4,28 +4,13 @@ import fs from "fs";
 
 const CartClass = new Cart();
 const CartRouter = Express.Router();
-const route = "./cart.txt";
+export const route = "./cart.txt";
 
-CartRouter.post("/", async (req, res) => {
-    let newCart = CartClass.createCart();
-    await fs.promises.writeFile(
-        route,
-        JSON.stringify(CartClass.getAllCarts(), null, 2)
-    );
-    res.send(`carrito creado con id ${newCart}`);
-});
-
-CartRouter.delete("/:id", async (req, res) => {
-    let getID = CartClass.getCartByID(req.params.id);
-    let newCarts = CartClass.deleteCart(req.params.id);
-    await fs.promises.writeFile(route, JSON.stringify(newCarts, null, 2));
-    getID === null
-        ? res.send(`No hay ningun carrito con id ${req.params.id}`)
-        : res.send(newCarts);
-});
-
-CartRouter.get("/", (req, res) => {
-    res.send(CartClass.getAllCarts());
+CartRouter.get("/", async (req, res) => {
+    let getCarts = await CartClass.getAllCarts();
+    getCarts === undefined
+        ? res.send("No hay carritos para cargar")
+        : res.send(await CartClass.getAllCarts());
 });
 
 CartRouter.get("/:id", (req, res) => {
@@ -42,6 +27,11 @@ CartRouter.get("/:id/productos", (req, res) => {
         : res.send(newCart.productos);
 });
 
+CartRouter.post("/", async (req, res) => {
+    let newCart = await CartClass.createCart();
+    res.send(`carrito creado con id ${newCart}`);
+});
+
 CartRouter.post("/:id/productos/:idPrd", async (req, res) => {
     let saveProduct = await CartClass.saveProductInCart(
         req.params.id,
@@ -54,6 +44,15 @@ CartRouter.post("/:id/productos/:idPrd", async (req, res) => {
     saveProduct === null
         ? res.send("no hay productos para agregar")
         : res.send(saveProduct);
+});
+
+CartRouter.delete("/:id", async (req, res) => {
+    let getID = CartClass.getCartByID(req.params.id);
+    let newCarts = CartClass.deleteCart(req.params.id);
+    await fs.promises.writeFile(route, JSON.stringify(newCarts, null, 2));
+    getID === null
+        ? res.send(`No hay ningun carrito con id ${req.params.id}`)
+        : res.send(newCarts);
 });
 
 CartRouter.delete("/:id/productos/:idPrd", async (req, res) => {
