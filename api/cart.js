@@ -16,9 +16,9 @@ class Cart {
         this.products = new Contenedor();
     }
     async createCart() {
-        let fsData = await fs.promises.readFile(route, "utf-8");
-        let cart = JSON.parse(fsData);
+        let cart = await this.getAllCarts();
         let data = {
+            id: undefined,
             timestamp: new Date().toLocaleDateString(),
             productos: [],
         };
@@ -45,35 +45,53 @@ class Cart {
             await fs.promises.writeFile(route, JSON.stringify([]));
         }
     }
-    getCartByID(id) {
-        let findCart = this.cart.find((c) => c.id == id);
+    async getCartByID(id) {
+        let cart = await this.getAllCarts();
+        let findCart = cart.find((c) => c.id == id);
         if (findCart === undefined) return null;
         return findCart;
     }
-    deleteCart(id) {
-        let filter = this.cart.filter((c) => c.id != id);
-        this.cart = filter;
-        return this.cart;
-    }
     async saveProductInCart(cID, pID) {
-        let dataCart = this.getCartByID(cID);
+        let cart = await this.getAllCarts();
+        let dataCart = await this.getCartByID(cID);
         let dataProduct = await this.products.getById(pID);
-        if (!dataProduct || !dataCart) {
-            return null;
-        } else {
+        let index = cart.findIndex((product) => product.id == cID);
+        if (!dataProduct || !dataCart) return null;
+        if (index >= 0) {
             dataCart.productos.push(dataProduct);
-            return dataCart;
+            cart.splice(index, 1, dataCart);
+
+            await fs.promises.writeFile(route, JSON.stringify(cart, null, 2));
         }
+        return dataCart;
     }
-    deleteProductInCart(cID, pID) {
-        let dataCart = this.getCartByID(cID);
+    async deleteCart(id) {
+        let cart = await this.getAllCarts();
+        let dataCart = await this.getCartByID(id);
+        let filter = cart.filter((c) => c.id != id);
+        if (dataCart === null) {
+            return null;
+        }
+        await fs.promises.writeFile(route, JSON.stringify(filter, null, 2));
+        return filter;
+    }
+
+    async deleteProductInCart(cID, pID) {
+        let dataCart = await this.getCartByID(cID);
+        let cart = await this.getAllCarts();
+        let index = cart.findIndex((product) => product.id == cID);
         if (!dataCart) {
             return null;
-        } else {
+        }
+        if (dataCart.productos.length === 0) return null;
+        if (index >= 0) {
             let newData = dataCart.productos.filter((p) => p.id != pID);
             dataCart.productos = newData;
-            return dataCart;
+            cart.splice(index, 1, dataCart);
+            await fs.promises.writeFile(route, JSON.stringify(cart, null, 2));
         }
+
+        return dataCart;
     }
 }
 export default Cart;
